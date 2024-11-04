@@ -9,9 +9,11 @@ export function LayoutClient({ children }: { children: React.ReactNode }) {
   
   return (
     <>
-      <Container className={pathname === "/" ? "fixed top-0 left-0 right-0 z-50" : ""}>
-        <Navbar />
-      </Container>
+      {pathname !== "/login" && pathname !== "/register" && (
+        <Container className={pathname === "/" ? "fixed top-0 left-0 right-0 z-50" : ""}>
+          <Navbar />
+        </Container>
+      )}
       {children}
     </>
   )

@@ -1,3 +1,4 @@
+import { Navbar } from "@/components/layout/navbar"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 import { cn } from "@/lib/utils"
 import type { Metadata } from "next"
