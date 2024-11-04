@@ -1,10 +1,9 @@
-import { Navbar } from "@/components/layout/navbar"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 import { cn } from "@/lib/utils"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { Container } from "@/components/ui/container"
+import { LayoutClient } from "@/components/layout/layout-client"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -33,10 +32,9 @@ export default function RootLayout({
           enableSystem={false}
           storageKey="spark-theme"
         >
-          <Container className="fixed top-0 left-0 right-0 z-50">
-            <Navbar />
-          </Container>
-          {children}
+          <LayoutClient>
+            {children}
+          </LayoutClient>
         </ThemeProvider>
       </body>
     </html>
