@@ -8,57 +8,44 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useState } from "react"
+import { signIn } from "next-auth/react"
 
 const loginSchema = z.object({
-  email: z.string().email("Некорректный email"),
+  username: z.string().min(3, "Введите имя пользователя"),
   password: z.string().min(6, "Минимальная длина пароля - 6 символов")
 })
 
 type LoginFormValues = z.infer<typeof loginSchema>
 
 export default function LoginPage() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [authError, setAuthError] = useState("")
   const router = useRouter()
-  
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<LoginFormValues>({
+  const [error, setError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema)
   })
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
       setIsLoading(true)
-      setAuthError("") // Сбрасываем ошибку при новой попытке
-
-      const response = await fetch('https://fakestoreapi.com/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: data.email,
-          password: data.password
-        })
+      setError("")
+      
+      const result = await signIn("credentials", {
+        username: data.username,
+        password: data.password,
+        redirect: false,
       })
 
-      if (!response.ok) {
-        throw new Error('Неверный email или пароль')
+      if (result?.error) {
+        setError("Неверное имя пользователя или пароль")
+        return
       }
 
-      const responseData = await response.json()
-      
-      // Здесь можно сохранить токен в localStorage или cookies
-      localStorage.setItem('token', responseData.token)
-      
-      // Перенаправляем на главную
-      router.push('/')
-      
+      router.push("/")
+      router.refresh()
     } catch (error) {
-      setAuthError(error instanceof Error ? error.message : 'Произошла ошибка при входе')
+      setError("Произошла ошибка при входе")
     } finally {
       setIsLoading(false)
     }
@@ -66,21 +53,21 @@ export default function LoginPage() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {authError && (
+      {error && (
         <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md">
-          {authError}
+          {error}
         </div>
       )}
       
       <div className="space-y-2">
         <Input
-          type="email"
-          placeholder="Email"
+          type="text"
+          placeholder="Имя пользователя"
           disabled={isLoading}
-          {...register("email")}
+          {...register("username")}
         />
-        {errors.email && (
-          <p className="text-sm text-red-500">{errors.email.message}</p>
+        {errors.username && (
+          <p className="text-sm text-red-500">{errors.username.message}</p>
         )}
         
         <Input

@@ -1,9 +1,20 @@
-import type { NextConfig } from "next";
+import { NextConfig } from 'next'
 
-const nextConfig: NextConfig = {
+const config: NextConfig = {
   images: {
     domains: ["fakestoreapi.com"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'fakestoreapi.com',
+        pathname: '/**',
+      },
+    ],
   },
-};
+  env: {
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+  },
+}
 
-export default nextConfig;
+export default config

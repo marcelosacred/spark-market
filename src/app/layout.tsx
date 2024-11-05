@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { LayoutClient } from "@/components/layout/layout-client"
+import { Providers } from "@/components/providers/providers"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -26,16 +27,11 @@ export default function RootLayout({
         "min-h-screen bg-background font-sans antialiased",
         inter.className
       )}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          storageKey="spark-theme"
-        >
+        <Providers>
           <LayoutClient>
             {children}
           </LayoutClient>
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   )
