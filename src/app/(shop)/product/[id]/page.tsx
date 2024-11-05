@@ -19,9 +19,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
     }
 
     return (
-      <div className="pt-16">
+      <>
         <Container>
-          <div className="grid gap-8 md:grid-cols-2 lg:gap-12">
+          <div className="grid gap-8 md:grid-cols-2 lg:gap-12 mt-12">
             {/* Галерея изображений */}
             <ProductGallery images={[product.image]} />
             
@@ -29,7 +29,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <ProductInfo product={product} />
           </div>
         </Container>
-      </div>
+      </>
     )
   } catch (error) {
     return notFound()
