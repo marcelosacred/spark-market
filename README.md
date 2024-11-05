@@ -59,9 +59,9 @@ Spark is a modern online shop built using Next.js and other cutting-edge technol
 
 ![Screenshot](public/screenshot.png)
 
-### GIF
+//### GIF
 
-![Demo](public/demo.gif)
+//![Demo](public/demo.gif)
 
 ---
 
